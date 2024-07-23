@@ -34,7 +34,7 @@
 						>
 							{{ branding.data?.brand_name }}
 						</span>
-						<span v-else> Learning </span>
+						<span v-else> Events Connect </span>
 					</div>
 					<div
 						v-if="userResource"
