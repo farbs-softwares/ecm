@@ -1,0 +1,74 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2024-07-22 05:50:19.017152",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "offers_section",
+  "event",
+  "offer",
+  "column_break_tysn",
+  "suggested_price",
+  "about_me"
+ ],
+ "fields": [
+  {
+   "fieldname": "offers_section",
+   "fieldtype": "Section Break",
+   "label": "Offers"
+  },
+  {
+   "columns": 2,
+   "fieldname": "event",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Event",
+   "options": "ECM Events",
+   "reqd": 1
+  },
+  {
+   "fieldname": "offer",
+   "fieldtype": "Small Text",
+   "label": "Offer text"
+  },
+  {
+   "fieldname": "column_break_tysn",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "suggested_price",
+   "fieldtype": "Int",
+   "label": "Suggested Price"
+  },
+  {
+   "fieldname": "about_me",
+   "fieldtype": "Small Text",
+   "label": "About Me"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2024-07-22 21:45:17.237977",
+ "modified_by": "Administrator",
+ "module": "Events Connect Management",
+ "name": "Event Offers",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

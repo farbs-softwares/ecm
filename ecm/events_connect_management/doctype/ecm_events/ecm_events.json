@@ -1,0 +1,195 @@
+{
+ "actions": [],
+ "allow_copy": 1,
+ "allow_rename": 1,
+ "creation": "2024-07-03 05:22:25.137097",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "title",
+  "start_date",
+  "start_time",
+  "finish_date",
+  "finish_time",
+  "cover_image",
+  "category",
+  "status",
+  "column_break_kjbp",
+  "location",
+  "location_map",
+  "description_section",
+  "about_event",
+  "full_description",
+  "link_eesd",
+  "more_details_section",
+  "number_of_participate",
+  "column_break_nbrc",
+  "group",
+  "column_break_vnrn",
+  "control_level",
+  "cost_section",
+  "suggested_cost",
+  "column_break_sanl",
+  "is_price_negotiable"
+ ],
+ "fields": [
+  {
+   "fieldname": "title",
+   "fieldtype": "Data",
+   "in_filter": 1,
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Title",
+   "reqd": 1
+  },
+  {
+   "fieldname": "start_time",
+   "fieldtype": "Time",
+   "label": "Start Time"
+  },
+  {
+   "fieldname": "finish_time",
+   "fieldtype": "Time",
+   "label": "Finish Time"
+  },
+  {
+   "fieldname": "cover_image",
+   "fieldtype": "Attach Image",
+   "label": "Cover Image"
+  },
+  {
+   "fieldname": "category",
+   "fieldtype": "Link",
+   "label": "Category",
+   "options": "ECM Category"
+  },
+  {
+   "fieldname": "column_break_kjbp",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "location",
+   "fieldtype": "Data",
+   "label": "Location"
+  },
+  {
+   "fieldname": "location_map",
+   "fieldtype": "Geolocation",
+   "label": "Location map"
+  },
+  {
+   "fieldname": "description_section",
+   "fieldtype": "Section Break",
+   "label": "Description"
+  },
+  {
+   "fieldname": "about_event",
+   "fieldtype": "Small Text",
+   "label": "About Event"
+  },
+  {
+   "fieldname": "full_description",
+   "fieldtype": "Long Text",
+   "label": "Full description"
+  },
+  {
+   "fieldname": "more_details_section",
+   "fieldtype": "Section Break",
+   "label": "More details"
+  },
+  {
+   "fieldname": "number_of_participate",
+   "fieldtype": "Int",
+   "label": "Number of Participate"
+  },
+  {
+   "fieldname": "column_break_nbrc",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "group",
+   "fieldtype": "Select",
+   "label": "Group?",
+   "options": "Group\nSingle"
+  },
+  {
+   "fieldname": "column_break_vnrn",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "control_level",
+   "fieldtype": "Select",
+   "label": "Control Level",
+   "options": "Dedicate\nActive Transaction\nAttendee Order"
+  },
+  {
+   "fieldname": "cost_section",
+   "fieldtype": "Section Break",
+   "label": "Cost"
+  },
+  {
+   "fieldname": "suggested_cost",
+   "fieldtype": "Currency",
+   "label": "Suggested Cost"
+  },
+  {
+   "fieldname": "column_break_sanl",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "is_price_negotiable",
+   "fieldtype": "Select",
+   "label": "Is price negotiable?",
+   "options": "Yes, it's negotiable\nNo, it is fix"
+  },
+  {
+   "fieldname": "start_date",
+   "fieldtype": "Date",
+   "label": "Start_Date"
+  },
+  {
+   "fieldname": "finish_date",
+   "fieldtype": "Date",
+   "label": "Finish_Date"
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Link",
+   "label": "Status",
+   "options": "ECM Status"
+  },
+  {
+   "fieldname": "link_eesd",
+   "fieldtype": "Table",
+   "label": "Tasks",
+   "options": "Event Tasks"
+  }
+ ],
+ "hide_toolbar": 1,
+ "image_field": "cover_image",
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2024-07-22 21:44:54.207020",
+ "modified_by": "Administrator",
+ "module": "Events Connect Management",
+ "name": "ECM Events",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}
