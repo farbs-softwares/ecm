@@ -4,6 +4,15 @@ app_publisher = "EventsConnect"
 app_description = "Events Connect Management"
 app_email = "dev@evc.io"
 app_license = "mit"
+
+
+website_route_rules = [
+	{"from_route": "/ecm/<path:app_path>", "to_route": "ecm"},
+	{
+		"from_route": "/events/<event_name>/<certificate_id>",
+		"to_route": "certificate",
+	},
+]
 # required_apps = []
 
 # Includes in <head>
