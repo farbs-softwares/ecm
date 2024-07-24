@@ -229,14 +229,14 @@ def get_average_rating(event):
 @frappe.whitelist(allow_guest=True)
 def get_reviews(event):
 	reviews = frappe.get_all(
-		"EventsConnect Event Review",
+		"ECM Event Review",
 		{"event": event},
 		["review", "rating", "owner", "creation"],
 		order_by="creation desc",
 	)
 
 	out_of_ratings = frappe.db.get_all(
-		"DocField", {"parent": "EventsConnect Event Review", "fieldtype": "Rating"}, ["options"]
+		"DocField", {"parent": "ECM Event Review", "fieldtype": "Rating"}, ["options"]
 	)
 	out_of_ratings = (len(out_of_ratings) and out_of_ratings[0].options) or 5
 	for review in reviews:
@@ -1375,10 +1375,10 @@ def get_categorized_events(events):
 @frappe.whitelist(allow_guest=True)
 def get_event_task(event):
 
-	chapters = frappe.get_all("Event Tasks", {"parent": event},["title","description"]
+	tasks = frappe.get_all("Event Tasks", {"parent": event},["title","description"]
 	)
 
-	return chapters
+	return tasks
 
 
 @frappe.whitelist(allow_guest=True)

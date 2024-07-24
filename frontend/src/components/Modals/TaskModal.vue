@@ -14,7 +14,7 @@
 			],
 		}"
 	>
-		<template #body-content>
+		<template #body-content> 
 			<div class="my-3 leading-6">
 				 <!-- {{ event.title }} -->
 					</div>
@@ -55,8 +55,8 @@ const chapterResource = createResource({
 				doctype: 'Event Tasks',
 				title: task.title,
 				description: task.description,
-				parent: task.event, 
-				parentfield: 'link_eesd',
+				parent: props.event, 
+				parentfield: 'task_link',
 				parenttype: 'ECM Events' 
 			},
 		}

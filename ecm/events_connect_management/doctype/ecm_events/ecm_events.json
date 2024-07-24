@@ -20,7 +20,7 @@
   "description_section",
   "about_event",
   "full_description",
-  "link_eesd",
+  "task_link",
   "more_details_section",
   "number_of_participate",
   "column_break_nbrc",
@@ -159,7 +159,7 @@
    "options": "ECM Status"
   },
   {
-   "fieldname": "link_eesd",
+   "fieldname": "task_link",
    "fieldtype": "Table",
    "label": "Tasks",
    "options": "Event Tasks"
@@ -169,7 +169,7 @@
  "image_field": "cover_image",
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-07-22 21:44:54.207020",
+ "modified": "2024-07-23 05:52:50.049812",
  "modified_by": "Administrator",
  "module": "Events Connect Management",
  "name": "ECM Events",

@@ -11,7 +11,7 @@
 			:style="{ backgroundImage: 'url(\'' + encodeURI(event.data.cover_image) + '\')' }"
 		>
 			<div v-if="!event.data.cover_image" class="image-placeholder">
-				{{ event.data.title }}
+				{{ event.data.title[0] }}
 			</div>
 		</div>
 		<div class="p-5">

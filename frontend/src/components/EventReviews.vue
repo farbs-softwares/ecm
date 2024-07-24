@@ -58,7 +58,7 @@
 		v-model="showReviewModal"
 		v-model:reloadReviews="reviews"
 		v-model:hasReviewed="hasReviewed"
-		:courseName="courseName"
+		:eventName="eventName"
 	/>
 </template>
 <script setup>
@@ -71,7 +71,7 @@ import ReviewModal from '@/components/Modals/ReviewModal.vue'
 const user = inject('$user')
 
 const props = defineProps({
-	courseName: {
+	eventName: {
 		type: String,
 		required: true,
 	},
@@ -87,11 +87,11 @@ const props = defineProps({
 
 const hasReviewed = createResource({
 	url: 'frappe.client.get_count',
-	cache: ['eligible_to_review', props.courseName, props.membership?.member],
+	cache: ['eligible_to_review', props.eventName, props.membership?.member],
 	params: {
-		doctype: 'LMS Course Review',
+		doctype: 'ECM Event Review',
 		filters: {
-			course: props.courseName,
+			event: props.eventName,
 			owner: props.membership?.member,
 		},
 	},
@@ -99,10 +99,10 @@ const hasReviewed = createResource({
 })
 
 const reviews = createResource({
-	url: 'lms.lms.utils.get_reviews',
-	cache: ['course_reviews', props.courseName],
+	url: 'ecm.events_connect_management.utils.get_reviews',
+	cache: ['event_reviews', props.eventName],
 	params: {
-		course: props.courseName,
+		event: props.eventName,
 	},
 	auto: true,
 })

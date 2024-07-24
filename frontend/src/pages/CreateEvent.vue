@@ -35,7 +35,7 @@
 							</div>
 							<TextEditor
 								:content="event.full_description"
-								@change="(val) => (event.full_descriptio = val)"
+								@change="(val) => (event.full_description = val)"
 								:editable="true"
 								:fixedMenu="true"
 								editorClass="prose-sm max-w-none border-b border-x bg-gray-100 rounded-b-md py-1 px-2 min-h-[7rem]"
@@ -45,7 +45,7 @@
 								{{ __('Event Cover image') }}
 							</div>
 						<FileUploader
-							v-if="!event.cover_image"
+							v-if="!event.event_image"
 							:fileTypes="['image/*']"
 							:validateFile="validateFile"
 							@success="(file) => saveImage(file)"
@@ -72,10 +72,10 @@
 								</div>
 								<div class="flex flex-col">
 									<span>
-										{{ event.cover_image.file_name }}
+										{{ event.event_image.file_name }}
 									</span>
 									<span class="text-sm text-gray-500 mt-1">
-										{{ getFileSize(event.cover_image.file_size) }}
+										{{ getFileSize(event.event_image.file_size) }}
 									</span>
 								</div>
 								<X
@@ -198,9 +198,9 @@
 				</div>
 			</div>
 			<div class="border-l pt-5">
-				<CourseOutline
-					v-if="courseResource.data"
-					:courseName="courseResource.data.name"
+				<EventOutline
+					v-if="eventResource.data"
+					:eventName="eventResource.data.name"
 					:title="event.title"
 					:allowEdit="true"
 				/>
@@ -235,8 +235,8 @@ import {
 import Link from '@/components/Controls/Link.vue'
 import { FileText, X } from 'lucide-vue-next'
 import { useRouter } from 'vue-router'
-import CourseOutline from '@/components/EventOutline.vue'
-import MultiSelect from '@/components/Controls/MultiSelect.vue'
+import EventOutline from '@/components/EventOutline.vue'
+
 
 const user = inject('$user')
 const newTag = ref('')
@@ -245,7 +245,7 @@ const instructors = ref([])
 
 
 const props = defineProps({
-	courseName: {
+	eventName: {
 		type: String,
 	},
 })
@@ -258,7 +258,7 @@ const event = reactive({
 	finish_time: '',
 	start_date: '',
 	finish_date: '',
-	cover_image: null,
+	event_image: '',
 	category: '',
 	number_of_participate:'',
 	location: '',
@@ -274,15 +274,15 @@ const event = reactive({
 
 onMounted(() => {
 	if (
-		props.courseName == 'new' &&
+		props.eventName == 'new' &&
 		!user.data?.is_moderator &&
 		!user.data?.is_instructor
 	) {
 		router.push({ name: 'Event' })
 	}
 
-	if (props.courseName !== 'new') {
-		courseResource.reload()
+	if (props.eventName !== 'new') {
+		eventResource.reload()
 	}
 
 	window.addEventListener('keydown', keyboardShortcut)
@@ -309,10 +309,7 @@ const eventCreationResource = createResource({
 		return {
 			doc: {
 				doctype: 'ECM Events',
-				image: event.cover_image?.file_url || '',
-				// instructors: instructors.value.map((instructor) => ({
-				// 	instructor: instructor,
-				// })),
+				cover_image: event.event_image?.file_url || '',
 				...values,
 			},
 		}
@@ -330,7 +327,7 @@ const courseEditResource = createResource({
 			doctype: 'ECM Events',
 			name: values.event,
 			fieldname: {
-				image: event.cover_image?.file_url || '',
+				cover_image: event.event_image?.file_url || '',
 				/* instructors: instructors.value.map((instructor) => ({
 					instructor: instructor,
 				})), */
@@ -340,12 +337,12 @@ const courseEditResource = createResource({
 	},
 })
 
-const courseResource = createResource({
+const eventResource = createResource({
 	url: 'frappe.client.get',
 	makeParams(values) {
 		return {
 			doctype: 'ECM Events',
-			name: props.courseName,
+			name: props.eventName,
 		}
 	},
 	auto: false,
@@ -370,7 +367,7 @@ const courseResource = createResource({
 			event[key] = event[key] ? true : false
 		} */
 
-		if (data.image) imageResource.reload({ image: data.image })
+		if (data.cover_image) imageResource.reload({ image: data.cover_image })
 		check_permission()
 	},
 })
@@ -384,19 +381,20 @@ const imageResource = createResource({
 	},
 	auto: false,
 	onSuccess(data) {
-		event.cover_image = data
+		event.event_image = data
 	},
 })
 
 const submitEvent = () => {
-	if (courseResource.data) {
+	
+	if (eventResource.data) {
 		courseEditResource.submit(
 			{
-				event: courseResource.data.name,
+				event: eventResource.data.name,
 			},
 			{
 				onSuccess() {
-					showToast('Success', 'Course updated successfully', 'check')
+					showToast('Success', 'Event updated successfully', 'check')
 				},
 				onError(err) {
 					showToast('Error', err.messages?.[0] || err, 'x')
@@ -409,7 +407,7 @@ const submitEvent = () => {
 				showToast('Success', 'Event created successfully', 'check')
 				router.push({
 					name: 'CreateEvent',
-					params: { courseName: data.name },
+					params: { eventName: data.name },
 				})
 			},
 			onError(err) {
@@ -422,10 +420,7 @@ const submitEvent = () => {
 const validateMandatoryFields = () => {
 	const mandatory_fields = [
 		'title',
-		'short_introduction',
-		'description',
-		'video_link',
-		'course_image',
+		'about_event',
 	]
 	for (const field of mandatory_fields) {
 		if (!event[field]) {
@@ -439,10 +434,10 @@ const validateMandatoryFields = () => {
 }
 
 watch(
-	() => props.courseName !== 'new',
+	() => props.eventName !== 'new',
 	(newVal) => {
 		if (newVal) {
-			courseResource.reload()
+			eventResource.reload()
 		}
 	}
 )
@@ -470,11 +465,11 @@ const validateFile = (file) => {
 } */
 
 const saveImage = (file) => {
-	event.cover_image = file
+	event.event_image = file
 }
 
 const removeImage = () => {
-	event.cover_image = null
+	event.event_image = null
 }
 
 const check_permission = () => {
@@ -499,15 +494,15 @@ const breadcrumbs = computed(() => {
 			route: { name: 'Events' },
 		},
 	]
-	if (courseResource.data) {
+	if (eventResource.data) {
 		crumbs.push({
 			label: event.title,
-			route: { name: 'EventDetail', params: { eventName: props.courseName } },
+			route: { name: 'EventDetail', params: { eventName: props.eventName } },
 		})
 	}
 	crumbs.push({
-		label: props.courseName == 'new' ? 'New Events' : 'Edit Events',
-		route: { name: 'CreateEvent', params: { courseName: props.courseName } },
+		label: props.eventName == 'new' ? 'New Events' : 'Edit Events',
+		route: { name: 'CreateEvent', params: { eventName: props.eventName } },
 	})
 	return crumbs
 })

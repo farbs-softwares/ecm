@@ -65,7 +65,7 @@
 							{{ tag }}
 						</Badge> -->
 					</div>
-					<!-- <CourseCardOverlay :course="course" class="md:hidden mb-4" /> -->
+					<EventCardOverlay :event="event" class="md:hidden mb-4" />
 					<div
 						v-html="event.data.full_description"
 						class="course-description"
@@ -73,11 +73,9 @@
 					<div class="mt-10">
 						 <EventOutline :eventName="event.data.name" :showOutline="true" /> 
 					</div>
-					<!-- <CourseReviews
-						:eventName="course.data.title"
-						:avg_rating="course.data.avg_rating"
-						:membership="course.data.membership"
-					/> -->
+					<EventReviews
+						:eventName="event.data.title"
+					/>
 				</div>
 				<div class="hidden md:block">
 				 	<EventCardOverlay :event="event" />
@@ -92,7 +90,7 @@ import { computed } from 'vue'
 import { Users, Star } from 'lucide-vue-next'
 import EventCardOverlay from '@/components/EventCardOverlay.vue'
 import EventOutline from '@/components/EventOutline.vue'
-import CourseReviews from '@/components/CourseReviews.vue'
+import EventReviews from '@/components/EventReviews.vue'
 import UserAvatar from '@/components/UserAvatar.vue'
 import { updateDocumentTitle } from '@/utils'
 import CourseInstructors from '@/components/CourseInstructors.vue'
