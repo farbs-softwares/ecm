@@ -328,7 +328,7 @@
    "fieldname": "exception_country",
    "fieldtype": "Table MultiSelect",
    "label": "Maintain Original Currency",
-   "options": "Payment Country"
+   "options": "ECM Payment Country"
   },
   {
    "fieldname": "email_templates_tab",
@@ -403,7 +403,7 @@
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2024-07-14 01:34:05.690131",
+ "modified": "2024-08-05 08:23:25.673233",
  "modified_by": "Administrator",
  "module": "Events Connect Management",
  "name": "ECM Settings",

@@ -206,11 +206,7 @@ const openNegotiateModal = (eventDetail = null) => {
 }
 const is_instructor = () => {
 	let user_is_instructor = false
-	props.eventDetail.data.instructors.forEach((instructor) => {
-		if (!user_is_instructor && instructor.name == user.data?.name) {
-			user_is_instructor = true
-		}
-	})
+	
 	return user_is_instructor
 }
 </script>
