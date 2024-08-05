@@ -82,7 +82,7 @@ const user = inject('$user')
 const openInstructorEditor = ref(false)
 
 const props = defineProps({
-	courseName: {
+	eventName: {
 		type: String,
 		required: true,
 	},
@@ -123,7 +123,7 @@ const lesson = reactive({
 const lessonDetails = createResource({
 	url: 'lms.lms.utils.get_lesson_creation_details',
 	params: {
-		course: props.courseName,
+		course: props.eventName,
 		chapter: props.chapterNumber,
 		lesson: props.lessonNumber,
 	},
@@ -166,7 +166,7 @@ const newLessonResource = createResource({
 		return {
 			doc: {
 				doctype: 'Course Lesson',
-				course: props.courseName,
+				course: props.eventName,
 				chapter: lessonDetails.data?.chapter.name,
 				...lesson,
 			},
@@ -398,7 +398,7 @@ const breadcrumbs = computed(() => {
 		},
 		{
 			label: lessonDetails.data?.course_title,
-			route: { name: 'CourseDetail', params: { courseName: props.courseName } },
+			route: { name: 'CourseDetail', params: { eventName: props.eventName } },
 		},
 	]
 
@@ -408,7 +408,7 @@ const breadcrumbs = computed(() => {
 			route: {
 				name: 'Lesson',
 				params: {
-					courseName: props.courseName,
+					eventName: props.eventName,
 					chapterNumber: props.chapterNumber,
 					lessonNumber: props.lessonNumber,
 				},
@@ -420,7 +420,7 @@ const breadcrumbs = computed(() => {
 		route: {
 			name: 'CreateLesson',
 			params: {
-				courseName: props.courseName,
+				eventName: props.eventName,
 				chapterNumber: props.chapterNumber,
 				lessonNumber: props.lessonNumber,
 			},

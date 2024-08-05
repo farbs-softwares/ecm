@@ -78,7 +78,7 @@
 							:to="{
 								name: 'CourseDetail',
 								params: {
-									courseName: course.name,
+									eventName: course.name,
 								},
 							}"
 						>

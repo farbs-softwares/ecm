@@ -24,7 +24,7 @@
 					showTooltip: false,
 					getRowRoute: (row) => ({
 						name: 'CourseDetail',
-						params: { courseName: row.name },
+						params: { eventName: row.name },
 					}),
 				}"
 			>

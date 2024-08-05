@@ -1,13 +1,13 @@
 <template>
 	<div
-		v-if="event.title"
+		v-if="eventv.title"
 		class="flex flex-col h-full rounded-md shadow-md text-base overflow-auto"
 		style="min-height: 320px"
 	>
 		<div
 			class="course-image"
-			:class="{ 'default-image': !event.cover_image }"
-			:style="{ backgroundImage: 'url(\'' + encodeURI(event.cover_image) + '\')' }"
+			:class="{ 'default-image': !eventv.cover_image }"
+			:style="{ backgroundImage: 'url(\'' + encodeURI(eventv.cover_image) + '\')' }"
 		>
 			<div class="flex relative top-4 left-4 w-fit flex-wrap">
 				<!-- <Badge
@@ -29,8 +29,8 @@
 					{{ tag }}
 				</Badge> -->
 			</div>
-			<div v-if="!event.cover_image" class="image-placeholder">
-				{{ event.title[0] }}
+			<div v-if="!eventv.cover_image" class="image-placeholder">
+				{{ eventv.title[0] }}
 			</div>
 		</div>
 		<div class="flex flex-col flex-auto p-4">
@@ -74,11 +74,11 @@
 			</div>
 
 			<div class="text-xl font-semibold leading-6">
-				{{ event.title }}
+				{{ eventv.title }}
 			</div>
 
 			<div class="short-introduction">
-				{{ event.about_event }}
+				{{ eventv.about_event }}
 			</div>
 
 			<!-- <ProgressBar
@@ -93,7 +93,7 @@
 				<div class="flex avatar-group overlap">
 				
 					<div class="font-thin">
-						{{ event.start_date }} - {{ event.start_time }} to {{ event.finish_time }}
+						{{ eventv.start_date }} - {{ eventv.start_time }} to {{ eventv.finish_time }}
 				</div>
 				</div>
 
@@ -111,12 +111,12 @@
 						/>
 					</div> -->
 					<div class="font-semibold">
-						{{ event.location }}
+						{{ eventv.location }}
 				</div>
 				</div>
 
 				<div class="font-semibold">
-					Cost	{{ event.suggested_cost }} USD
+					Cost	{{ eventv.suggested_cost }} USD
 				</div>
 			</div>
 		</div>
@@ -133,7 +133,7 @@ import ProgressBar from '@/components/ProgressBar.vue'
 const { user } = sessionStore()
 
 const props = defineProps({
-	event: {
+	eventv: {
 		type: Object,
 		default: null,
 	},

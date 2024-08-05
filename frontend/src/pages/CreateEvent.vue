@@ -20,12 +20,12 @@
 							{{ __('Details') }}
 						</div>
 						<FormControl
-							v-model="event.title"
+							v-model="eventDetail.title"
 							:label="__('Title')"
 							class="mb-4"
 						/>
 						<FormControl
-							v-model="event.about_event"
+							v-model="eventDetail.about_event"
 							:label="__(' About Event')"
 							class="mb-4"
 						/>
@@ -34,8 +34,8 @@
 								{{ __('Event Description') }}
 							</div>
 							<TextEditor
-								:content="event.full_description"
-								@change="(val) => (event.full_description = val)"
+								:content="eventDetail.full_description"
+								@change="(val) => (eventDetail.full_description = val)"
 								:editable="true"
 								:fixedMenu="true"
 								editorClass="prose-sm max-w-none border-b border-x bg-gray-100 rounded-b-md py-1 px-2 min-h-[7rem]"
@@ -45,7 +45,7 @@
 								{{ __('Event Cover image') }}
 							</div>
 						<FileUploader
-							v-if="!event.event_image"
+							v-if="!eventDetail.event_image"
 							:fileTypes="['image/*']"
 							:validateFile="validateFile"
 							@success="(file) => saveImage(file)"
@@ -72,10 +72,10 @@
 								</div>
 								<div class="flex flex-col">
 									<span>
-										{{ event.event_image.file_name }}
+										{{ eventDetail.event_image.file_name }}
 									</span>
 									<span class="text-sm text-gray-500 mt-1">
-										{{ getFileSize(event.event_image.file_size) }}
+										{{ getFileSize(eventDetail.event_image.file_size) }}
 									</span>
 								</div>
 								<X
@@ -92,33 +92,33 @@
 							<div class="grid grid-cols-2 gap-10">
 								
 								<FormControl
-								v-model="event.start_date"
+								v-model="eventDetail.start_date"
 								:label="__('Start Date')"
 								type="date"
 								class="mb-4"
 								/>
 								<FormControl
-								v-model="event.start_time"
+								v-model="eventDetail.start_time"
 								:label="__('Start Time')"
 								type="time"
 								class="mb-4"
 								/>
 								<FormControl
-									v-model="event.finish_date"
+									v-model="eventDetail.finish_date"
 									:label="__('End Date')"
 									type="date"
 									class="mb-4"
 								/>
 								
 								<FormControl
-									v-model="event.finish_time"
+									v-model="eventDetail.finish_time"
 									:label="__('End Time')"
 									type="time"
 									class="mb-4"
 								/>
 								
 								<FormControl
-									v-model="event.location"
+									v-model="eventDetail.location"
 									:label="__(' Event Location')"
 									class="mb-4"
 								/>
@@ -131,15 +131,15 @@
 							<div class="grid grid-cols-2 gap-10">
 
 								<FormControl
-									v-model="event.suggested_cost"
+									v-model="eventDetail.suggested_cost"
 									:label="__(' Cost')"
 									class="mb-4"
 								/>
 								<FormControl
-									v-model="event.is_price_negotiable"
+									v-model="eventDetail.is_price_negotiable"
 									:label="__(' Is price negotiable')"
 									type="select"
-									:options="eventGetSelectPriceOptions.data.is_price_negotiable"
+									:options="eventGetSelectPriceOptions.data?.is_price_negotiable"
 									class="mb-4"
 								/>
 							</div>
@@ -151,22 +151,22 @@
 							<div class="grid grid-cols-2 gap-10">
 
 								<FormControl
-									v-model="event.number_of_participate"
+									v-model="eventDetail.number_of_participate"
 									:label="__(' Number of Participate')"
 									class="mb-4"
 								/>
 								<FormControl
-									v-model="event.group"
+									v-model="eventDetail.group"
 									:label="__('Group?')"
 									type="select"
-									:options="eventGetSelectGroupOptions.data.group"
+									:options="eventGetSelectGroupOptions.data?.group"
 									class="mb-4"
 								/>
 								<FormControl
-									v-model="event.control_level"
+									v-model="eventDetail.control_level"
 									:label="__('Control Level')"
 									type="select"
-									:options="eventGetSelectControlLevelOptions.data.control_level"
+									:options="eventGetSelectControlLevelOptions.data?.control_level"
 									class="mb-4"
 								/>
 							</div>
@@ -179,14 +179,14 @@
 								<div class="flex items-center">
 									<Link
 									doctype="ECM Status"
-									v-model="event.status"
+									v-model="eventDetail.status"
 									:label="__('Status')"
 									/>
 								</div>
 								<div class="flex items-center">
 									<Link
 									doctype="ECM Category"
-									v-model="event.category"
+									v-model="eventDetail.category"
 									:label="__('Category')"
 									/>
 								</div>
@@ -197,11 +197,12 @@
 					
 				</div>
 			</div>
+			
 			<div class="border-l pt-5">
 				<EventOutline
 					v-if="eventResource.data"
 					:eventName="eventResource.data.name"
-					:title="event.title"
+					:title="eventDetail.title"
 					:allowEdit="true"
 				/>
 			</div>
@@ -250,7 +251,7 @@ const props = defineProps({
 	},
 })
 
-const event = reactive({
+const eventDetail = reactive({
 	title: '',
 	about_event: '',
 	full_description: '',
@@ -264,10 +265,10 @@ const event = reactive({
 	location: '',
 	status:'',
 	number_of_participate:0,
-	group:false,
+	group:'',
 	control_level:'',
 	suggested_cost:0,
-	is_price_negotiable:false,
+	is_price_negotiable:'',
 	published: false,
 
 })
@@ -284,7 +285,6 @@ onMounted(() => {
 	if (props.eventName !== 'new') {
 		eventResource.reload()
 	}
-
 	window.addEventListener('keydown', keyboardShortcut)
 })
 
@@ -309,7 +309,7 @@ const eventCreationResource = createResource({
 		return {
 			doc: {
 				doctype: 'ECM Events',
-				cover_image: event.event_image?.file_url || '',
+				cover_image: eventDetail.event_image?.file_url || '',
 				...values,
 			},
 		}
@@ -325,19 +325,20 @@ const courseEditResource = createResource({
 	makeParams(values) {
 		return {
 			doctype: 'ECM Events',
-			name: values.event,
+			name: values.eventDetail,
 			fieldname: {
-				cover_image: event.event_image?.file_url || '',
+				cover_image: eventDetail.event_image?.file_url || '',
 				/* instructors: instructors.value.map((instructor) => ({
 					instructor: instructor,
 				})), */
-				...event,
+				...eventDetail,
 			},
 		}
 	},
 })
 
 const eventResource = createResource({
+	
 	url: 'frappe.client.get',
 	makeParams(values) {
 		return {
@@ -348,30 +349,22 @@ const eventResource = createResource({
 	auto: false,
 	onSuccess(data) {
 		Object.keys(data).forEach((key) => {
-			if (key == 'instructors') {
-				instructors.value = []
-				data.instructors.forEach((instructor) => {
-					instructors.value.push(instructor.instructor)
-				})
-			} else if (Object.hasOwn(event, key)) event[key] = data[key]
+            if (Object.hasOwn(eventDetail, key)) eventDetail[key] = data[key]
 		})
-/* 		let checkboxes = [
-			'published',
-			'upcoming',
-			'disable_self_learning',
-			'paid_course',
-			'featured',
-		]
-		for (let idx in checkboxes) {
-			let key = checkboxes[idx]
-			event[key] = event[key] ? true : false
-		} */
 
+		eventDetail['start_time'] = ref(formatTime(data['start_time']))
+		eventDetail['finish_time'] = ref(formatTime(data['finish_time']))
+		//console.log("start", ref(new Date(`1970-01-01T${data['start_time']}Z`).toISOString().substr(11, 8)));
 		if (data.cover_image) imageResource.reload({ image: data.cover_image })
 		check_permission()
 	},
 })
 
+function formatTime(time) {
+  const [hours, minutes, seconds] = time.split(':');
+  const formattedHours = hours.padStart(2, '0');
+  return `${formattedHours}:${minutes}:${seconds}`;
+}
 const imageResource = createResource({
 	url: 'ecm.events_connect_management.api.get_file_info',
 	makeParams(values) {
@@ -381,7 +374,7 @@ const imageResource = createResource({
 	},
 	auto: false,
 	onSuccess(data) {
-		event.event_image = data
+		eventDetail.event_image = data
 	},
 })
 
@@ -390,7 +383,7 @@ const submitEvent = () => {
 	if (eventResource.data) {
 		courseEditResource.submit(
 			{
-				event: eventResource.data.name,
+				eventDetail: eventResource.data.name,
 			},
 			{
 				onSuccess() {
@@ -402,7 +395,7 @@ const submitEvent = () => {
 			}
 		)
 	} else {
-		eventCreationResource.submit(event, {
+		eventCreationResource.submit(eventDetail, {
 			onSuccess(data) {
 				showToast('Success', 'Event created successfully', 'check')
 				router.push({
@@ -423,12 +416,12 @@ const validateMandatoryFields = () => {
 		'about_event',
 	]
 	for (const field of mandatory_fields) {
-		if (!event[field]) {
+		if (!eventDetail[field]) {
 			let fieldLabel = convertToTitleCase(field.split('_').join(' '))
 			return `${fieldLabel} is mandatory`
 		}
 	}
-	/* if (event.paid_course && (!event.course_price || !event.currency)) {
+	/* if (eventDetail.paid_course && (!eventDetail.course_price || !eventDetail.currency)) {
 		return 'Course price and currency are mandatory for paid courses'
 	} */
 }
@@ -451,13 +444,13 @@ const validateFile = (file) => {
 
 /* const updateTags = () => {
 	if (newTag.value) {
-		event.tags = event.tags ? `${event.tags}, ${newTag.value}` : newTag.value
+		eventDetail.tags = eventDetail.tags ? `${eventDetail.tags}, ${newTag.value}` : newTag.value
 		newTag.value = ''
 	}
 } */
 
 /* const removeTag = (tag) => {
-	event.tags = event.tags
+	eventDetail.tags = eventDetail.tags
 		?.split(', ')
 		.filter((t) => t !== tag)
 		.join(', ')
@@ -465,11 +458,11 @@ const validateFile = (file) => {
 } */
 
 const saveImage = (file) => {
-	event.event_image = file
+	eventDetail.event_image = file
 }
 
 const removeImage = () => {
-	event.event_image = null
+	eventDetail.event_image = null
 }
 
 const check_permission = () => {
@@ -496,7 +489,7 @@ const breadcrumbs = computed(() => {
 	]
 	if (eventResource.data) {
 		crumbs.push({
-			label: event.title,
+			label: eventDetail.title,
 			route: { name: 'EventDetail', params: { eventName: props.eventName } },
 		})
 	}
@@ -510,7 +503,7 @@ const breadcrumbs = computed(() => {
 const pageMeta = computed(() => {
 	return {
 		title: 'Create an Event',
-		description: 'Create or edit an event.',
+		description: 'Create or edit an eventDetail.',
 	}
 })
 const eventGetSelectGroupOptions = createResource({

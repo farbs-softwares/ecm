@@ -1,5 +1,5 @@
 <template>
-	<div v-if="event.data">
+	<div v-if="eventDetail.data">
 		<header
 			class="sticky top-0 z-10 flex items-center justify-between border-b bg-white px-3 py-2.5 sm:px-5"
 		>
@@ -10,14 +10,14 @@
 				<div class="md:w-2/3">
 		
 					<div class="text-3xl font-semibold">
-						{{ event.data.title }}
+						{{ eventDetail.data.title }}
 					</div>
 					<div class="my-3 leading-6">
-						{{ event.data.about_event }}
+						{{ eventDetail.data.about_event }}
 					</div>
 					<div class="flex items-center">
 						<!-- <Tooltip
-							v-if="event.data.avg_rating"
+							v-if="eventDetail.data.avg_rating"
 							:text="__('Average Rating')"
 							class="flex items-center"
 						>
@@ -65,20 +65,20 @@
 							{{ tag }}
 						</Badge> -->
 					</div>
-					<EventCardOverlay :event="event" class="md:hidden mb-4" />
+					<EventCardOverlay :eventDetail="eventDetail" class="md:hidden mb-4" />
 					<div
-						v-html="event.data.full_description"
+						v-html="eventDetail.data.full_description"
 						class="course-description"
 					></div>
 					<div class="mt-10">
-						 <EventOutline :eventName="event.data.name" :showOutline="true" /> 
+						 <EventOutline :eventName="eventDetail.data.name" :showOutline="true" /> 
 					</div>
 					<EventReviews
-						:eventName="event.data.title"
+						:eventName="eventDetail.data.title"
 					/>
 				</div>
 				<div class="hidden md:block">
-				 	<EventCardOverlay :event="event" />
+				 	<EventCardOverlay :eventDetail="eventDetail" />
 				</div>
 			</div>
 		</div>
@@ -104,7 +104,7 @@ const props = defineProps({
 	},
 })
 
-const event = createResource({
+const eventDetail = createResource({
 	url: 'ecm.events_connect_management.utils.get_event_details',
 	cache: ['event', props.eventName],
 	params: {
@@ -116,16 +116,16 @@ const event = createResource({
 const breadcrumbs = computed(() => {
 	let items = [{ label: 'All Events', route: { name: 'Events' } }]
 	items.push({
-		label: event?.data?.title,
-		route: { name: 'EventDetail', params: { event: event?.data?.name } },
+		label: eventDetail?.data?.title,
+		route: { name: 'EventDetail', params: { eventName: eventDetail?.data?.name } },
 	})
 	return items
 })
 
 const pageMeta = computed(() => {
 	return {
-		title: event?.data?.title,
-		description: event?.data?.about_event,
+		title: eventDetail?.data?.title,
+		description: eventDetail?.data?.about_event,
 	}
 })
 

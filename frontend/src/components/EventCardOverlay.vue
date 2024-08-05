@@ -1,34 +1,34 @@
 <template>
 	<div class="shadow rounded-md min-w-80">
 		<iframe
-			v-if="event.data.video_link"
+			v-if="eventDetail.data.video_link"
 			:src="video_link"
 			class="rounded-t-md min-h-56 w-full"
 		/>
 		<div
 			class="rounded-t-md min-h-56 w-full"
-			:class="{ 'default-image': !event.data.cover_image }"
-			:style="{ backgroundImage: 'url(\'' + encodeURI(event.data.cover_image) + '\')' }"
+			:class="{ 'default-image': !eventDetail.data.cover_image }"
+			:style="{ backgroundImage: 'url(\'' + encodeURI(eventDetail.data.cover_image) + '\')' }"
 		>
-			<div v-if="!event.data.cover_image" class="image-placeholder">
-				{{ event.data.title[0] }}
+			<div v-if="!eventDetail.data.cover_image" class="image-placeholder">
+				{{ eventDetail.data.title[0] }}
 			</div>
 		</div>
 		<div class="p-5">
-			<div v-if="event.data.price" class="text-2xl font-semibold mb-3">
-				{{ event.data.price }}
+			<div v-if="eventDetail.data.price" class="text-2xl font-semibold mb-3">
+				{{ eventDetail.data.price }}
 			</div>
 			<router-link
-				v-if="event.data.membership"
+				v-if="eventDetail.data.membership"
 				:to="{
 					name: 'Lesson',
 					params: {
-						courseName: event.name,
-						chapterNumber: event.data.current_lesson
-							? event.data.current_lesson.split('-')[0]
+						eventName: eventDetail.name,
+						chapterNumber: eventDetail.data.current_lesson
+							? eventDetail.data.current_lesson.split('-')[0]
 							: 1,
-						lessonNumber: event.data.current_lesson
-							? event.data.current_lesson.split('-')[1]
+						lessonNumber: eventDetail.data.current_lesson
+							? eventDetail.data.current_lesson.split('-')[1]
 							: 1,
 					},
 				}"
@@ -40,26 +40,26 @@
 				</Button>
 			</router-link>
 			<router-link
-				v-else-if="event.data.paid_course"
+				v-else-if="eventDetail.data.paid_course"
 				:to="{
 					name: 'Billing',
 					params: {
-						type: 'event',
-						name: event.data.name,
+						type: 'eventDetail',
+						name: eventDetail.data.name,
 					},
 				}"
 			>
 				<Button variant="solid" size="md" class="w-full">
 					<span>
-						{{ __('Buy this event') }}
+						{{ __('Buy this eventDetail') }}
 					</span>
 				</Button>
 			</router-link>
 			<div
-				v-else-if="event.data.disable_self_learning"
+				v-else-if="eventDetail.data.disable_self_learning"
 				class="bg-blue-100 text-blue-900 text-sm rounded-md py-1 px-3"
 			>
-				{{ __('Contact the Administrator to enroll for this event.') }}
+				{{ __('Contact the Administrator to enroll for this eventDetail.') }}
 			</div>
 		
 			<Button variant="solid"
@@ -73,7 +73,7 @@
 				:to="{
 					name: 'CreateEvent',
 					params: {
-						courseName: event.data.name,
+						eventName: eventDetail.data.name,
 					},
 				}"
 			>
@@ -91,38 +91,38 @@
 
 			</router-link>
 			<div class="mt-8 mb-4 font-medium">
-				{{ __('This event has:') }}
+				{{ __('This eventDetail has:') }}
 			</div>
 			<div class="flex items-center mb-3">
 				<BookOpen class="h-5 w-5 stroke-1.5 text-gray-600" />
 				<span class="ml-2">
-					{{ event.data.lesson_count }} {{ __('Tasks') }}
+					{{ eventDetail.data.lesson_count }} {{ __('Tasks') }}
 				</span>
 			</div>
 			<div class="flex items-center mb-3">
 				<Users class="h-5 w-5 stroke-1.5 text-gray-600" />
 				<span class="ml-2">
-					{{ event.data.enrollment_count_formatted }}
+					{{ eventDetail.data.enrollment_count_formatted }}
 					{{ __('Suggestion') }}
 				</span>
 			</div>
 			<div class="flex items-center mb-3">
 				<Bookmark class="h-5 w-5 stroke-1.5 text-gray-600" />
 				<span class="ml-2">
-					{{ event.data.enrollment_count_formatted }}
+					{{ eventDetail.data.enrollment_count_formatted }}
 					{{ __('Bookmarks') }}
 				</span>
 			</div>
 			<div class="flex items-center">
 				<Star class="h-5 w-5 stroke-1.5 fill-orange-500 text-gray-50" />
 				<span class="ml-2">
-					{{ event.data.avg_rating }} {{ __('Rating') }}
+					{{ eventDetail.data.avg_rating }} {{ __('Rating') }}
 				</span>
 			</div>
 		</div>
 		<NegotiateModal
 		v-model="showNegotiateModal"
-		:event="props.event.data.name"
+		:eventDetail="props.eventDetail.data.name"
 		:chapterDetail="getCurrentChapter()"
 	    />
 	</div>
@@ -145,7 +145,7 @@ const getCurrentChapter = () => {
 	return currentEvent.value
 }
 const props = defineProps({
-	event: {
+	eventDetail: {
 		type: Object,
 		default: null,
 	},
@@ -156,8 +156,8 @@ const props = defineProps({
 })
 
 const video_link = computed(() => {
-	if (props.event.data.video_link) {
-		return 'https://www.youtube.com/embed/' + props.event.data.video_link
+	if (props.eventDetail.data.video_link) {
+		return 'https://www.youtube.com/embed/' + props.eventDetail.data.video_link
 	}
 	return null
 })
@@ -178,7 +178,7 @@ function enrollStudent() {
 		})
 		enrollStudentResource
 			.submit({
-				event: props.event.data.name,
+				eventDetail: props.eventDetail.data.name,
 			})
 			.then(() => {
 				createToast({
@@ -190,7 +190,7 @@ function enrollStudent() {
 					router.push({
 						name: 'Lesson',
 						params: {
-							courseName: props.event.data.name,
+							eventName: props.eventDetail.data.name,
 							chapterNumber: 1,
 							lessonNumber: 1,
 						},
@@ -200,13 +200,13 @@ function enrollStudent() {
 	}
 }
 
-const openNegotiateModal = (event = null) => {
-	currentEvent.value = event
+const openNegotiateModal = (eventDetail = null) => {
+	currentEvent.value = eventDetail
 	showNegotiateModal.value = true
 }
 const is_instructor = () => {
 	let user_is_instructor = false
-	props.event.data.instructors.forEach((instructor) => {
+	props.eventDetail.data.instructors.forEach((instructor) => {
 		if (!user_is_instructor && instructor.name == user.data?.name) {
 			user_is_instructor = true
 		}

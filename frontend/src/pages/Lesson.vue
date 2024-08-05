@@ -19,7 +19,7 @@
 				</p>
 				<router-link
 					v-if="user.data"
-					:to="{ name: 'CourseDetail', params: { courseName: courseName } }"
+					:to="{ name: 'CourseDetail', params: { eventName: eventName } }"
 				>
 					<Button variant="solid">
 						{{ __('Start Learning') }}
@@ -40,7 +40,7 @@
 							:to="{
 								name: 'Lesson',
 								params: {
-									courseName: courseName,
+									eventName: eventName,
 									chapterNumber: lesson.data.prev.split('.')[0],
 									lessonNumber: lesson.data.prev.split('.')[1],
 								},
@@ -60,7 +60,7 @@
 							:to="{
 								name: 'CreateLesson',
 								params: {
-									courseName: courseName,
+									eventName: eventName,
 									chapterNumber: props.chapterNumber,
 									lessonNumber: props.lessonNumber,
 								},
@@ -75,7 +75,7 @@
 							:to="{
 								name: 'Lesson',
 								params: {
-									courseName: courseName,
+									eventName: eventName,
 									chapterNumber: lesson.data.next.split('.')[0],
 									lessonNumber: lesson.data.next.split('.')[1],
 								},
@@ -169,7 +169,7 @@
 					/>
 				</div>
 				<CourseOutline
-					:courseName="courseName"
+					:eventName="eventName"
 					:key="chapterNumber"
 					:getProgress="lesson.data.membership ? true : false"
 				/>
@@ -198,7 +198,7 @@ const editor = ref(null)
 const instructorEditor = ref(null)
 
 const props = defineProps({
-	courseName: {
+	eventName: {
 		type: String,
 		required: true,
 	},
@@ -214,10 +214,10 @@ const props = defineProps({
 
 const lesson = createResource({
 	url: 'lms.lms.utils.get_lesson',
-	cache: ['lesson', props.courseName, props.chapterNumber, props.lessonNumber],
+	cache: ['lesson', props.eventName, props.chapterNumber, props.lessonNumber],
 	makeParams(values) {
 		return {
-			course: props.courseName,
+			course: props.eventName,
 			chapter: values ? values.chapter : props.chapterNumber,
 			lesson: values ? values.lesson : props.lessonNumber,
 		}
@@ -265,7 +265,7 @@ const progress = createResource({
 	makeParams() {
 		return {
 			lesson: lesson.data.name,
-			course: props.courseName,
+			course: props.eventName,
 		}
 	},
 })
@@ -274,14 +274,14 @@ const breadcrumbs = computed(() => {
 	let items = [{ label: 'All Courses', route: { name: 'Courses' } }]
 	items.push({
 		label: lesson?.data?.course_title,
-		route: { name: 'CourseDetail', params: { course: props.courseName } },
+		route: { name: 'CourseDetail', params: { course: props.eventName } },
 	})
 	items.push({
 		label: lesson?.data?.title,
 		route: {
 			name: 'Lesson',
 			params: {
-				course: props.courseName,
+				course: props.eventName,
 				chapterNumber: props.chapterNumber,
 				lessonNumber: props.lessonNumber,
 			},
@@ -336,7 +336,7 @@ const allowInstructorContent = () => {
 }
 
 const redirectToLogin = () => {
-	window.location.href = `/login?redirect-to=/lms/courses/${props.courseName}`
+	window.location.href = `/login?redirect-to=/lms/courses/${props.eventName}`
 }
 
 const pageMeta = computed(() => {

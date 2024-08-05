@@ -22,7 +22,7 @@
 					:to="{
 						name: 'CreateEvent',
 						params: {
-							courseName: 'new',
+							eventName: 'new',
 						},
 					}"
 				>
@@ -61,34 +61,15 @@
 						class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 my-5 mx-5"
 					>
 						<router-link
-							v-for="event in tab.events.value"
+							v-for="eventv in tab.events.value"
 							:to="
-								// course.membership && course.current_lesson
-								// 	? {
-								// 			name: 'Lesson',
-								// 			params: {
-								// 				eventName: event.name,
-								// 				/* chapterNumber: course.current_lesson.split('-')[0],
-								// 				lessonNumber: course.current_lesson.split('-')[1], */
-								// 			},
-								// 	  }
-								// 	: course.membership
-								// 	? {
-								// 			name: 'Lesson',
-								// 			params: {
-								// 				eventName: event.name,
-								// 			/* 	chapterNumber: 1,
-								// 				lessonNumber: 1, */
-								// 			},
-								// 	  }
-								//	: {
-								{
+								{          
 											name: 'EventDetail',
-											params: { eventName: event.name },
+											params: { eventName: eventv.name },
 									  }
 							"
 						>
-							<EventCard :event="event" />
+							<EventCard :eventv="eventv" />
 						</router-link>
 					</div>
 					<div
@@ -177,8 +158,8 @@ const addToTabs = (label, events) => {
 
 const getEvents = (type) => {
 	if (searchQuery.value) {
-		return events.data[type].filter((event) =>
-			event.title.toLowerCase().includes(searchQuery.value.toLowerCase())
+		return events.data[type].filter((eventv) =>
+			eventv.title.toLowerCase().includes(searchQuery.value.toLowerCase())
 		)
 	}
 	return events.data[type]

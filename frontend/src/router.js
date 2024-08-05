@@ -22,7 +22,7 @@ const routes = [
 		props: true,
 	},
 	/*{
-		path: '/courses/:courseName/learn/:chapterNumber-:lessonNumber',
+		path: '/courses/:eventName/learn/:chapterNumber-:lessonNumber',
 		name: 'Lesson',
 		component: () => import('@/pages/Lesson.vue'),
 		props: true,
@@ -96,13 +96,13 @@ const routes = [
 		props: true,
 	}, */
 	{
-		path: '/events/:courseName/edit',
+		path: '/events/:eventName/edit',
 		name: 'CreateEvent',
 		component: () => import('@/pages/CreateEvent.vue'),
 		props: true,
 	},
 	/* {
-		path: '/courses/:courseName/learn/:chapterNumber-:lessonNumber/edit',
+		path: '/courses/:eventName/learn/:chapterNumber-:lessonNumber/edit',
 		name: 'CreateLesson',
 		component: () => import('@/pages/CreateLesson.vue'),
 		props: true,
