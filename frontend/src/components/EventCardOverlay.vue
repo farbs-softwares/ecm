@@ -69,7 +69,7 @@
 			</Button>
 		
 			<router-link
-				v-if="user?.data?.is_moderator || is_instructor()"
+				v-if="user?.data?.is_moderator || is_owner()"
 				:to="{
 					name: 'CreateEvent',
 					params: {
@@ -204,9 +204,16 @@ const openNegotiateModal = (eventDetail = null) => {
 	currentEvent.value = eventDetail
 	showNegotiateModal.value = true
 }
-const is_instructor = () => {
-	let user_is_instructor = false
-	
-	return user_is_instructor
+const is_owner = () => {
+	let user_is_owner = false
+	if(props.eventDetail.data?.owner == user.data?.name)
+	   user_is_owner = true
+/* 	props.eventDetail.data.instructors.forEach((instructor) => {
+		if (!user_is_instructor && instructor.name == user.data?.name) {
+			user_is_instructor = true
+		}
+	}) */
+    console.log("user",props.eventDetail.data)
+	return user_is_owner
 }
 </script>

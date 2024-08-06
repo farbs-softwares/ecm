@@ -1288,6 +1288,7 @@ def get_event_details(event):
 				"start_date",
 				"finish_date",
 				"status",
+				"owner"
 		],
 		as_dict=1,
 	)
