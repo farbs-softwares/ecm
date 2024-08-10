@@ -213,7 +213,7 @@ const is_owner = () => {
 			user_is_instructor = true
 		}
 	}) */
-    console.log("user",props.eventDetail.data)
+    //console.log("user",props.eventDetail.data)
 	return user_is_owner
 }
 </script>

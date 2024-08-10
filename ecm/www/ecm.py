@@ -25,14 +25,14 @@ def get_context():
 def get_meta(app_path):
 	if app_path == "events":
 		return {
-			"title": _("Course List"),
+			"title": _("Events List"),
 			"image": frappe.db.get_single_value("Website Settings", "banner_image"),
 			"description": "This page lists all the courses published on our website",
 			"keywords": "All Courses, Courses, Learn",
 			"link": "/events",
 		}
 
-	if re.match(r"^courses/.*$", app_path):
+	if re.match(r"^events/.*$", app_path):
 		if "new/edit" in app_path:
 			return {
 				"title": _("New Evetns"),
@@ -43,7 +43,7 @@ def get_meta(app_path):
 			}
 		course_name = app_path.split("/")[1]
 		course = frappe.db.get_value(
-			"LMS Course",
+			"ECM Events",
 			course_name,
 			["title", "image", "short_introduction", "tags"],
 			as_dict=True,

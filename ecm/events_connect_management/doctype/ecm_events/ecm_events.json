@@ -17,6 +17,9 @@
   "column_break_kjbp",
   "location",
   "location_map",
+  "country",
+  "province",
+  "city",
   "description_section",
   "about_event",
   "full_description",
@@ -163,13 +166,29 @@
    "fieldtype": "Table",
    "label": "Tasks",
    "options": "Event Tasks"
+  },
+  {
+   "fieldname": "country",
+   "fieldtype": "Link",
+   "label": "Country",
+   "options": "Country"
+  },
+  {
+   "fieldname": "province",
+   "fieldtype": "Data",
+   "label": "State/Province"
+  },
+  {
+   "fieldname": "city",
+   "fieldtype": "Data",
+   "label": "City"
   }
  ],
  "hide_toolbar": 1,
  "image_field": "cover_image",
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-08-05 23:15:11.194625",
+ "modified": "2024-08-09 06:58:12.440336",
  "modified_by": "Administrator",
  "module": "Events Connect Management",
  "name": "ECM Events",

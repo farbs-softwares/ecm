@@ -1288,7 +1288,10 @@ def get_event_details(event):
 				"start_date",
 				"finish_date",
 				"status",
-				"owner"
+				"owner",
+				"country",
+				"province",
+				"city"
 		],
 		as_dict=1,
 	)
@@ -1885,3 +1888,16 @@ def publish_notifications(doc, method):
 	frappe.publish_realtime(
 		"publish_eventsconnect_notifications", user=doc.for_user, after_commit=True
 	)
+@frappe.whitelist(allow_guest=True)
+def get_categories(category_filter):
+	category_filter = json.loads(category_filter)
+	categoryList = []
+	categories = frappe.get_all("ECM Category", fields=["category"])
+	for category in categories:
+		new_category_filter = {
+            'category': category.get('category'),
+            'checked': True
+        }
+		categoryList.append(new_category_filter)
+
+	return categoryList

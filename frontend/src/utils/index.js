@@ -363,24 +363,7 @@ export function getSidebarLinks() {
 				'CreateEvent',
 			],
 		},
-		{
-			label: 'Batches',
-			icon: 'Users',
-			to: 'Batches',
-			activeFor: ['Batches', 'BatchDetail', 'Batch', 'BatchCreation'],
-		},
-		{
-			label: 'Certified Participants',
-			icon: 'GraduationCap',
-			to: 'CertifiedParticipants',
-			activeFor: ['CertifiedParticipants'],
-		},
-		{
-			label: 'Notifications',
-			icon: 'Briefcase',
-			to: 'Jobs',
-			activeFor: ['Jobs', 'JobDetail'],
-		},
+		
 		{
 			label: 'Statistics',
 			icon: 'TrendingUp',

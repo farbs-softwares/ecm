@@ -155,7 +155,7 @@ def get_user_info():
 	)
 	user["roles"] = frappe.get_roles(user.name)
 	user.is_instructor = "Event Creator" in user.roles
-	user.is_moderator = "Moderator" in user.roles
+	user.is_moderator = "ECM Moderator" in user.roles
 	user.is_evaluator = "Batch Evaluator" in user.roles
 	return user
 

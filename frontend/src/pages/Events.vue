@@ -1,40 +1,62 @@
 <template>
 	<div v-if="events.data">
 		<header
-			class="sticky top-0 z-10 flex items-center justify-between border-b bg-white px-3 py-2.5 sm:px-5"
-		>
+	class="sticky top-0 z-10 flex flex-col border-b bg-white px-3 py-2.5 sm:px-5"
+>
+	<div class="flex justify-between items-center mb-2">
+		<div>
 			<Breadcrumbs
 				class="h-7"
 				:items="[{ label: __('All Events'), route: { name: 'Events' } }]"
 			/>
-			<div class="flex space-x-2">
-				<FormControl
-					type="text"
-					placeholder="Search Event"
-					v-model="searchQuery"
-					@input="events.reload()"
-				>
+		</div>
+		<div class="flex space-x-2">
+			<FormControl
+				type="text"
+				placeholder="Search Event"
+				v-model="searchQuery"
+				@input="events.reload()"
+			>
+				<template #prefix>
+					<Search class="w-4 stroke-1.5 text-gray-600" name="search" />
+				</template>
+			</FormControl>
+			<router-link
+				:to="{
+					name: 'CreateEvent',
+					params: {
+						eventName: 'new',
+					},
+				}"
+			>
+				<Button v-if="user.data?.is_moderator" variant="solid">
 					<template #prefix>
-						<Search class="w-4 stroke-1.5 text-gray-600" name="search" />
+						<Plus class="h-4 w-4" />
 					</template>
-				</FormControl>
-				<router-link
-					:to="{
-						name: 'CreateEvent',
-						params: {
-							eventName: 'new',
-						},
-					}"
-				>
-					<Button v-if="user.data?.is_moderator" variant="solid">
-						<template #prefix>
-							<Plus class="h-4 w-4" />
-						</template>
-						{{ __('New Event') }}
-					</Button>
-				</router-link>
+					{{ __('New Event') }}
+				</Button>
+			</router-link>
+		</div>
+	</div>
+	<CategoryFilter theme="gray" :categories="filter_categories" @update:categories="handleCategoryUpdate"></CategoryFilter>
+	<div class="flex justify-between items-center">
+		<div class="flex space-x-2"></div>
+	<div class="flex items-center"><MultiSelect 
+	  v-model="filter_countries" 
+	  doctype = "Country"
+	  :label="__('Country')"
+	/></div>
+	<div class="flex flex-wrap gap-4"><Button  variant="solid" @click="logCategories()">
+					<template #prefix>
+						<Plus class="h-4 w-4" />
+					</template>
+					{{ __('Apply filter') }}
+				</Button></div>
 			</div>
-		</header>
+	
+</header>
+
+		
 		<div class="">
 			<Tabs
 				v-model="tabIndex"
@@ -101,11 +123,14 @@ import EventCard from '@/components/EventCard.vue'
 import { Plus, Search } from 'lucide-vue-next'
 import { ref, computed, inject } from 'vue'
 import { updateDocumentTitle } from '@/utils'
+import CategoryFilter from '../components/CategoryFilter.vue'
+import MultiSelect from '../components/Controls/MultiSelect.vue'
 
 
 const user = inject('$user')
 const searchQuery = ref('')
-
+const filter_categories = ref([])
+const filter_countries = ref([])
 
 const events = createResource({
 	url: 'ecm.events_connect_management.utils.get_events',
@@ -146,7 +171,10 @@ const addToTabs = (label, events) => {
 		count: computed(() => events?.length),
 	})
 }
-
+    // Handle the updated categories
+    function handleCategoryUpdate(updatedCategories) {
+		filter_categories.value = updatedCategories;
+    }
 /* const getCourses = (type) => {
 	if (searchQuery.value) {
 		return events.data[type].filter((course) =>
@@ -155,16 +183,27 @@ const addToTabs = (label, events) => {
 	}
 	return events.data[type]
 } */
+    // For debugging purposes
+    function logCategories() {
+		events.reload()
+    }
 
 const getEvents = (type) => {
-	if (searchQuery.value) {
-		return events.data[type].filter((eventv) =>
-			eventv.title.toLowerCase().includes(searchQuery.value.toLowerCase())
-		)
-	}
-	return events.data[type]
-}
+    return events.data[type].filter((eventv) => {
+        // Filter by search query if it exists
+        const matchesSearchQuery = !searchQuery.value || eventv.title.toLowerCase().includes(searchQuery.value.toLowerCase());
 
+        // Get the list of selected categories
+        const selectedCategories = filter_categories.value.filter(category => category.checked).map(category => category.category);
+
+        // Filter by category if there are selected categories
+        const matchesCategory = selectedCategories.length === 0 || selectedCategories.includes(eventv.category) 
+		&& (filter_countries.value.length === 0 || filter_countries.value.includes(eventv.country));
+		console.log("filter",filter_countries.value)
+        // Only include events that match both filters
+        return matchesSearchQuery && matchesCategory;
+    });
+}
 const pageMeta = computed(() => {
 	return {
 		title: 'Events',

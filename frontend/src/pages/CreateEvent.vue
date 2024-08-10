@@ -122,6 +122,21 @@
 									:label="__(' Event Location')"
 									class="mb-4"
 								/>
+								<Link
+									doctype="Country"
+									v-model="eventDetail.country"
+									:label="__('Country')"
+									/>
+								<FormControl
+									v-model="eventDetail.province"
+									:label="__(' State/Provice')"
+									class="mb-4"
+								/>
+								<FormControl
+									v-model="eventDetail.city"
+									:label="__(' City')"
+									class="mb-4"
+								/>
 							</div>
 						</div>
 						<div class="mb-4">
@@ -269,6 +284,9 @@ const eventDetail = reactive({
 	control_level:'',
 	suggested_cost:0,
 	is_price_negotiable:'',
+	country:'',
+	city:'',
+    province:'',
 	published: false,
 
 })
