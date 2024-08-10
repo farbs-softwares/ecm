@@ -6,10 +6,10 @@
 			size: 'lg',
 			actions: [
 				{
-					label: chapterDetail ? __('Edit Task') : __('Create Task'),
+					label: taskDetail ? __('Edit Task') : __('Create Task'),
 					variant: 'solid',
 					onClick: (close) =>
-						chapterDetail ? editChapter(close) : addChapter(close),
+						taskDetail ? editChapter(close) : addChapter(close),
 				},
 			],
 		}"
@@ -36,16 +36,18 @@ const props = defineProps({
 		type: String,
 		required: true,
 	},
-	offerDetail: {
+
+	taskDetail:{
 		type: Object,
-	},
+	}
 })
 const chapter = reactive({
 	title: '',
 })
 const task = reactive({
 	description: '',
-	title: ''
+	title: '',
+	name: ''
 })
 const chapterResource = createResource({
 	url: 'frappe.client.insert',
@@ -62,15 +64,36 @@ const chapterResource = createResource({
 		}
 	},
 })
-
-const chapterEditResource = createResource({
+const chapterEditDescriptionResource = createResource({
 	url: 'frappe.client.set_value',
+	makeParams() {
+		return {
+			doctype: 'Event Tasks',
+			name: props.taskDetail?.name,
+			fieldname: 'description',
+			value: task.description
+		};
+	}
+})
+const chapterEditTitleResource = createResource({
+	url: 'frappe.client.set_value',
+	makeParams() {
+		return {
+			doctype: 'Event Tasks',
+			name: props.taskDetail?.name,
+			fieldname: 'title',
+			value: task.title
+		};
+	}
+})
+const chapterEditResource = createResource({
+	url: 'frappe.client.save',
 	makeParams(values) {
 		return {
 			doctype: 'Event Tasks',
-			name: props.offerDetail?.name,
-			fieldnames: ['title', 'description'],
-			values: [task.title, task.description],
+			name: props.taskDetail?.name,
+			title: task.title,
+			description: task.description, 
 		}
 	},
 })
@@ -87,7 +110,6 @@ const addChapter = (close) => {
 				}
 			},
 			onSuccess: (data) => {
-				
 				createToast({
 				text: 'Your Task Created successfully',
 				icon: 'check',
@@ -103,16 +125,18 @@ const addChapter = (close) => {
 }
 
 const editChapter = (close) => {
-	chapterEditResource.submit(
+	chapterEditTitleResource.submit(
 		{},
 		{
 			validate() {
-				if (!chapter.title) {
+				if (!task.title) {
 					return 'Title is required'
+				}
+				if (!task.name) {
+					return 'name is required'
 				}
 			},
 			onSuccess() {
-				outline.value.reload()
 				createToast({
 					text: 'Task updated successfully',
 					icon: 'check',
@@ -139,9 +163,11 @@ const showError = (err) => {
 }
 
 watch(
-	() => props.chapterDetail,
-	(newChapter) => {
-		chapter.title = newChapter?.title
+	() => props.taskDetail,
+	(newTask) => {
+		task.title = newTask?.title,
+		task.description = newTask?.description,
+		task.name = newTask?.name
 	}
 )
 </script>

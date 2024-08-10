@@ -122,8 +122,8 @@
 		</div>
 		<NegotiateModal
 		v-model="showNegotiateModal"
-		:eventDetail="props.eventDetail.data.name"
-		:chapterDetail="getCurrentChapter()"
+		:event="props.eventDetail.data.name"
+		:offerDetail="getCurrentChapter()"
 	    />
 	</div>
 </template>

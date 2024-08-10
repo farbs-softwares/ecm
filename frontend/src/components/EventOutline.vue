@@ -39,68 +39,9 @@
 					</div>
 				</DisclosureButton>
 				<DisclosurePanel>
-					<Draggable
-						:list="task.lessons"
-						item-key="name"
-						group="items"
-						@end="updateOutline"
-						:data-task="task.name"
-					>
-						<template #item="{ element: lesson }">
-							<div class="outline-lesson pl-8 py-2 pr-4">
-								<router-link
-									:to="{
-										name: allowEdit ? 'CreateLesson' : 'Lesson',
-										params: {
-											eventName: eventName,
-											/* chapterNumber: lesson.number.split('.')[0],
-											lessonNumber: lesson.number.split('.')[1], */
-										},
-									}"
-								>
-									<div class="flex items-center text-sm leading-5 group">
-										<MonitorPlay
-											v-if="lesson.icon === 'icon-youtube'"
-											class="h-4 w-4 text-gray-900 stroke-1 mr-2"
-										/>
-										<HelpCircle
-											v-else-if="lesson.icon === 'icon-quiz'"
-											class="h-4 w-4 text-gray-900 stroke-1 mr-2"
-										/>
-										<FileText
-											v-else-if="lesson.icon === 'icon-list'"
-											class="h-4 w-4 text-gray-900 stroke-1 mr-2"
-										/>
-										{{ lesson.title }}
-										<Trash2
-											v-if="allowEdit"
-											@click.prevent="trashLesson(lesson.name, task.name)"
-											class="h-4 w-4 stroke-1.5 text-gray-700 ml-auto invisible group-hover:visible"
-										/>
-										<Check
-											v-if="lesson.is_complete"
-											class="h-4 w-4 text-green-700 ml-2"
-										/>
-									</div>
-								</router-link>
-							</div>
-						</template>
-					</Draggable>
+				
 					<div v-if="allowEdit" class="flex mt-2 mb-4 pl-8">
-						<!-- <router-link
-							:to="{
-								name: 'CreateLesson',
-								params: {
-									eventName: eventName,
-									chapterNumber: task.idx,
-									lessonNumber: task.lessons.length + 1,
-								},
-							}"
-						> 
-							<Button>
-								{{ __('Add Lesson') }}
-							</Button>
-						</router-link>-->
+	
 						<Button class="ml-2" @click="openTaskModal(task)">
 							{{ __('Edit Task') }}
 						</Button>
@@ -109,11 +50,11 @@
 			</Disclosure>
 		</div>
 	</div>
-	<TaskModal
+	<TaskModal 
 		v-model="showTaskModal"
 		v-model:outline="outline"
 		:event="eventName"
-		:chapterDetail="getCurrentTask()"
+		:taskDetail="getCurrentTask()"
 	/>
 </template>
 <script setup>
@@ -169,6 +110,7 @@ const outline = createResource({
 		
 	},
 	auto: true,
+	
 })
 
 const deleteLesson = createResource({
@@ -200,18 +142,14 @@ const updateLessonIndex = createResource({
 	},
 })
 
-const trashLesson = (lessonName, chapterName) => {
-	deleteLesson.submit({
-		lesson: lessonName,
-		task: chapterName,
-	})
-}
+
 
 const openChapterDetail = (index) => {
 	return index == route.params.chapterNumber || index == 1
 }
 
 const openTaskModal = (task = null) => {
+	console.log("task",outline.data.name)
 	currentTask.value = task
 	showTaskModal.value = true
 }

@@ -30,6 +30,7 @@
   {
    "fieldname": "offer",
    "fieldtype": "Small Text",
+   "in_list_view": 1,
    "label": "Offer text"
   },
   {
@@ -49,7 +50,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-07-22 21:45:17.237977",
+ "modified": "2024-08-10 06:57:26.319804",
  "modified_by": "Administrator",
  "module": "Events Connect Management",
  "name": "Event Offers",
